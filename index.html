@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Invoice Generator</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg bg-blue mb-4">
+		<div class="container">
+			<a class="navbar-brand" href="#">Invoice Generator</a>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="sidebar mb-4">
+					<h5>Choose a Template</h5>
+					<div class="row template-selector">
+						<div class="col-4">
+							<div class="template-card active" data-template="modern">
+								<img src="assets/img/modern-template.png" alt="Modern Template" class="img-fluid">
+							</div>
+							<p class="text-center mt-1 small">Modern</p>
+						</div>
+						<div class="col-4">
+							<div class="template-card" data-template="classic">
+								<img src="assets/img/classic-template.png" alt="Classic Template" class="img-fluid">
+							</div>
+							<p class="text-center mt-1 small">Classic</p>
+						</div>
+						<div class="col-4">
+							<div class="template-card" data-template="minimal">
+								<img src="assets/img/minimal-template.png" alt="Minimal Template" class="img-fluid">
+							</div>
+							<p class="text-center mt-1 small">Minimal</p>
+						</div>
+					</div>
+
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="business-tab" data-bs-toggle="tab" data-bs-target="#business" type="button" role="tab" aria-selected="true">Business</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="client-tab" data-bs-toggle="tab" data-bs-target="#client" type="button" role="tab" aria-selected="false">Client</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="invoice-tab" data-bs-toggle="tab" data-bs-target="#invoice" type="button" role="tab" aria-selected="false">Invoice</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="items-tab" data-bs-toggle="tab" data-bs-target="#items" type="button" role="tab" aria-selected="false">Items</button>
+						</li>
+					</ul>
+
+					<div class="tab-content">
+						<div class="tab-pane fade show active" id="business" role="tabpanel">
+							<form id="business-form">
+								<div class="mb-3">
+									<label for="business-logo" class="form-label">Logo</label>
+									<input type="file" class="form-control" id="business-logo" accept="image/*">
+									<div id="logo-preview-container">
+										<img id="logo-preview" class="d-none" alt="Logo Preview">
+									</div>
+								</div>
+								<div class="mb-3">
+									<label for="business-name" class="form-label">Business Name</label>
+									<input type="text" class="form-control" id="business-name" value="Acme Corporation">
+								</div>
+								<div class="mb-3">
+									<label for="business-address" class="form-label">Address</label>
+									<textarea class="form-control" id="business-address" rows="3">123 Business St,
+Bengaluru, Karnataka
+India - 560001</textarea>
+								</div>
+								<div class="mb-3">
+									<label for="business-contact" class="form-label">Contact Info</label>
+									<textarea class="form-control" id="business-contact" rows="2">contact@acmecorp.com
++91 98765 43210</textarea>
+								</div>
+							</form>
+						</div>
+
+						<div class="tab-pane fade" id="client" role="tabpanel">
+							<form id="client-form">
+								<div class="mb-3">
+									<label for="client-name" class="form-label">Client Name</label>
+									<input type="text" class="form-control" id="client-name" value="Client Company Ltd.">
+								</div>
+								<div class="mb-3">
+									<label for="client-address" class="form-label">Address</label>
+									<textarea class="form-control" id="client-address" rows="3">456 Client Ave,
+Bengaluru, Karantaka
+India - 560001</textarea>
+								</div>
+								<div class="mb-3">
+									<label for="client-contact" class="form-label">Contact Info</label>
+									<textarea class="form-control" id="client-contact" rows="2">billing@clientcompany.com
++91 98765 43211</textarea>
+								</div>
+							</form>
+						</div>
+
+						<div class="tab-pane fade" id="invoice" role="tabpanel">
+							<form id="invoice-form">
+								<div class="mb-3">
+									<label for="invoice-number" class="form-label">Invoice Number</label>
+									<input type="text" class="form-control" id="invoice-number" value="INV-2025-0001">
+								</div>
+								<div class="mb-3">
+									<label for="invoice-date" class="form-label">Invoice Date</label>
+									<input type="date" class="form-control" id="invoice-date">
+								</div>
+								<div class="mb-3">
+									<label for="due-date" class="form-label">Due Date</label>
+									<input type="date" class="form-control" id="due-date">
+								</div>
+								<div class="mb-3">
+									<label for="currency" class="form-label">Currency</label>
+									<select class="form-control" id="currency">
+										<option value="₹">INR (₹)</option>
+										<option value="$">USD ($)</option>
+										<option value="€">Euro (€)</option>
+										<option value="£">GBP (£)</option>
+										<option value="¥">JPY (¥)</option>
+									</select>
+								</div>
+								<div class="mb-3">
+									<label for="tax-rate" class="form-label">Tax Rate (%)</label>
+									<input type="number" class="form-control" id="tax-rate" value="18">
+								</div>
+								<div class="mb-3">
+									<label for="notes" class="form-label">Notes</label>
+									<textarea class="form-control" id="notes" rows="3">&lt;center&gt;Thank you for your business!&lt;/center&gt;</textarea>
+								</div>
+							</form>
+						</div>
+
+						<div class="tab-pane fade" id="items" role="tabpanel">
+							<form id="items-form">
+								<div id="items-container">
+									<div class="item-row">
+										<div class="mb-3">
+											<label class="form-label">Item Description</label>
+											<input type="text" class="form-control item-description" value="Web Design Services">
+										</div>
+										<div class="row">
+											<div class="col-4">
+												<div class="mb-3">
+													<label class="form-label">Quantity</label>
+													<input type="number" class="form-control item-quantity" value="1">
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="mb-3">
+													<label class="form-label">Unit Price</label>
+													<input type="number" class="form-control item-price" value="2500">
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="mb-3">
+													<label class="form-label">Amount</label>
+													<input type="text" class="form-control item-amount" value="2500" disabled>
+												</div>
+											</div>
+										</div>
+										<button type="button" class="btn btn-sm btn-danger remove-item">Remove</button>
+									</div>
+
+									<div class="item-row">
+										<div class="mb-3">
+											<label class="form-label">Item Description</label>
+											<input type="text" class="form-control item-description" value="Hosting (Annual)">
+										</div>
+										<div class="row">
+											<div class="col-4">
+												<div class="mb-3">
+													<label class="form-label">Quantity</label>
+													<input type="number" class="form-control item-quantity" value="1">
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="mb-3">
+													<label class="form-label">Unit Price</label>
+													<input type="number" class="form-control item-price" value="2500">
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="mb-3">
+													<label class="form-label">Amount</label>
+													<input type="text" class="form-control item-amount" value="2500" disabled>
+												</div>
+											</div>
+										</div>
+										<button type="button" class="btn btn-sm btn-danger remove-item">Remove</button>
+									</div>
+								</div>
+								<button type="button" class="btn btn-sm btn-success mt-3" id="add-item">Add Item</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-8">
+				<div class="preview mb-4">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h5>Preview</h5>
+						<div>
+							<button id="download-btn" class="btn btn-primary">Download PDF</button>
+						</div>
+					</div>
+					<div class="preview-container">
+						<div id="invoice-preview" class="template-modern">
+							<!-- Invoice preview will be generated here -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <footer class="footer mt-auto py-3 bg-blue text-end">
+        <div class="container text-white fw-bold">Made with <span style="color: red">❤️</span> | <a href="https://vishwas.me/" target="_blank" class="link-warning">Vishwas</a></div>
+    </footer>
+	<script src="assets/script.js"></script>
+</body>
+
+</html>
